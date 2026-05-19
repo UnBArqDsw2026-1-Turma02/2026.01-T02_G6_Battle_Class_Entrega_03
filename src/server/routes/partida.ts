@@ -1,13 +1,12 @@
 import { PartidaFacade } from '../facades/PartidaFacade.js';
-import { NotImplementedError } from '../../shared/index.js';
+import type { RespostaDTO } from '../../shared/index.js';
 
 /**
- * Stub do ponto de entrada (Express). NÃO importa 'express' — fora do scaffold.
- * TODO(@Dannyeclisson): registrar router.post('/rodada', ...).
+ * Adaptador framework-agnóstico do ponto de entrada (substitui o handler
+ * Express no scaffold). Na Parte B vira `router.post('/rodada', ...)`.
  */
-export function registrarRotaPartida(
-  facade: PartidaFacade = new PartidaFacade(),
-): void {
-  void facade;
-  throw new NotImplementedError('F2 routes/partida.registrarRotaPartida');
+export function criarHandlerPartida(facade: PartidaFacade = new PartidaFacade()) {
+  return async (userId: string, respostas: ReadonlyArray<RespostaDTO>) => {
+    return facade.finalizarRodada(userId, respostas);
+  };
 }

@@ -1,13 +1,16 @@
-import { NotImplementedError } from '../../../shared/index.js';
-
-/** Subsystem (F2) — ~SistemaEconomia. */
+/** Subsystem (F2) — saldo em memória (mock Supabase). */
 export class EconomiaService {
+  private readonly saldos = new Map<string, number>();
+
   calcularRecompensa(acertos: number): number {
-    void acertos;
-    throw new NotImplementedError('F2 EconomiaService.calcularRecompensa');
+    return acertos * 10;
   }
+
   creditar(userId: string, moedas: number): void {
-    void userId; void moedas;
-    throw new NotImplementedError('F2 EconomiaService.creditar');
+    this.saldos.set(userId, (this.saldos.get(userId) ?? 0) + moedas);
+  }
+
+  obterSaldo(userId: string): number {
+    return this.saldos.get(userId) ?? 0;
   }
 }

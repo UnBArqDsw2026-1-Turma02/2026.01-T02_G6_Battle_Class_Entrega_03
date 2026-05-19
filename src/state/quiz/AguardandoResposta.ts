@@ -1,20 +1,28 @@
 import type { EstadoQuiz } from './EstadoQuiz.js';
 import type { SessaoQuiz } from './SessaoQuiz.js';
-import { NotImplementedError } from '../../shared/index.js';
+import { EstadoInvalidoError } from '../../shared/index.js';
+import { ExibindoPergunta } from './ExibindoPergunta.js';
+import { QuizEncerrado } from './QuizEncerrado.js';
 
-/** ConcreteState (F3). TODO(@LucasOliveira): comportamento + transições. */
+/** ConcreteState (F3) — aguarda resposta; acerto credita a Carteira. */
 export class AguardandoResposta implements EstadoQuiz {
   readonly nome = 'AguardandoResposta';
+
   onAcerto(ctx: SessaoQuiz): void {
-    void ctx;
-    throw new NotImplementedError('F3 AguardandoResposta.onAcerto');
+    ctx.carteira.creditar(10);
+    this.encerrarOuProxima(ctx);
   }
   onErro(ctx: SessaoQuiz): void {
-    void ctx;
-    throw new NotImplementedError('F3 AguardandoResposta.onErro');
+    this.encerrarOuProxima(ctx);
   }
-  proxima(ctx: SessaoQuiz): void {
-    void ctx;
-    throw new NotImplementedError('F3 AguardandoResposta.proxima');
+  proxima(): void {
+    throw new EstadoInvalidoError(this.nome, 'proxima');
+  }
+
+  private encerrarOuProxima(ctx: SessaoQuiz): void {
+    ctx.perguntasRestantes -= 1;
+    ctx.setEstado(
+      ctx.perguntasRestantes <= 0 ? new QuizEncerrado() : new ExibindoPergunta(),
+    );
   }
 }

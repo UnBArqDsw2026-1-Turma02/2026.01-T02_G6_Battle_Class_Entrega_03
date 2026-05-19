@@ -1,11 +1,15 @@
 import { QuestaoCreator } from './QuestaoCreator.js';
 import type { Questao } from './Questao.js';
-import { NotImplementedError } from '../../../shared/index.js';
 
-/** ConcreteCreator (F1). TODO(@JoaoCarlosLobo): formato/parser da banca Fuvest. */
+/** ConcreteCreator (F1) — formato/normalização da banca FUVEST. */
 export class QuestaoFuvestCreator extends QuestaoCreator {
   protected override factoryMethod(textoBase: string): Questao {
-    void textoBase;
-    throw new NotImplementedError('F1 QuestaoFuvestCreator.factoryMethod');
+    return {
+      id: `FUVEST-${textoBase.trim().length}`,
+      enunciado: textoBase.trim(),
+      banca: 'FUVEST',
+      dificuldade: 'dificil',
+      alternativas: ['A', 'B', 'C', 'D', 'E'],
+    };
   }
 }

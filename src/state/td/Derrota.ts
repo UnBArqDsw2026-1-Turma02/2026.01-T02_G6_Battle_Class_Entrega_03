@@ -1,20 +1,16 @@
 import type { EstadoTD } from './EstadoTD.js';
-import type { SessaoTD } from './SessaoTD.js';
-import { NotImplementedError } from '../../shared/index.js';
+import { EstadoInvalidoError } from '../../shared/index.js';
 
-/** ConcreteState (F3) TERMINAL (não transita) —. TODO(@MarinaGaldi): comportamento + transições. */
+/** ConcreteState (F3) — TERMINAL (Derrota): nenhuma ação é válida. */
 export class Derrota implements EstadoTD {
   readonly nome = 'Derrota';
-  tick(ctx: SessaoTD, dt: number): void {
-    void ctx; void dt;
-    throw new NotImplementedError('F3 Derrota.tick');
+  tick(): void {
+    throw new EstadoInvalidoError(this.nome, 'tick');
   }
-  iniciar(ctx: SessaoTD): void {
-    void ctx;
-    throw new NotImplementedError('F3 Derrota.iniciar');
+  iniciar(): void {
+    throw new EstadoInvalidoError(this.nome, 'iniciar');
   }
-  pronto(ctx: SessaoTD): void {
-    void ctx;
-    throw new NotImplementedError('F3 Derrota.pronto');
+  pronto(): void {
+    throw new EstadoInvalidoError(this.nome, 'pronto');
   }
 }

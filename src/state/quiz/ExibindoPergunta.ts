@@ -1,20 +1,18 @@
 import type { EstadoQuiz } from './EstadoQuiz.js';
 import type { SessaoQuiz } from './SessaoQuiz.js';
-import { NotImplementedError } from '../../shared/index.js';
+import { EstadoInvalidoError } from '../../shared/index.js';
+import { AguardandoResposta } from './AguardandoResposta.js';
 
-/** ConcreteState (F3). TODO(@LucasOliveira): comportamento + transições. */
+/** ConcreteState (F3) — questão na tela; só pode avançar p/ resposta. */
 export class ExibindoPergunta implements EstadoQuiz {
   readonly nome = 'ExibindoPergunta';
-  onAcerto(ctx: SessaoQuiz): void {
-    void ctx;
-    throw new NotImplementedError('F3 ExibindoPergunta.onAcerto');
+  onAcerto(): void {
+    throw new EstadoInvalidoError(this.nome, 'onAcerto');
   }
-  onErro(ctx: SessaoQuiz): void {
-    void ctx;
-    throw new NotImplementedError('F3 ExibindoPergunta.onErro');
+  onErro(): void {
+    throw new EstadoInvalidoError(this.nome, 'onErro');
   }
   proxima(ctx: SessaoQuiz): void {
-    void ctx;
-    throw new NotImplementedError('F3 ExibindoPergunta.proxima');
+    ctx.setEstado(new AguardandoResposta());
   }
 }

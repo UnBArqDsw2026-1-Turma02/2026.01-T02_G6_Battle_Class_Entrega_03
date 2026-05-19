@@ -35,6 +35,13 @@ export class SaldoInsuficienteError extends BattleClassError {
   }
 }
 
+/** Entrada inválida em qualquer camada (ex.: lista de respostas vazia). */
+export class EntradaInvalidaError extends BattleClassError {
+  constructor(detalhe: string) {
+    super(`Entrada inválida: ${detalhe}`);
+  }
+}
+
 /** F3 — transição inválida ou ação sobre estado terminal. */
 export class EstadoInvalidoError extends BattleClassError {
   constructor(estado: string, acao: string) {

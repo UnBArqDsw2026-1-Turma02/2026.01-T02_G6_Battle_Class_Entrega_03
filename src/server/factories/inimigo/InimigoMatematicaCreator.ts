@@ -1,10 +1,10 @@
 import { InimigoCreator } from './InimigoCreator.js';
 import type { Inimigo } from './Inimigo.js';
-import { NotImplementedError } from '../../../shared/index.js';
+import { InimigoMatematica } from './InimigoMatematica.js';
 
-/** ConcreteCreator (F1). TODO(@JoaoCarlosLobo): return new InimigoMatematica(). */
+/** ConcreteCreator (F1). */
 export class InimigoMatematicaCreator extends InimigoCreator {
   protected override factoryMethod(): Inimigo {
-    throw new NotImplementedError('F1 InimigoMatematicaCreator.factoryMethod');
+    return new InimigoMatematica();
   }
 }

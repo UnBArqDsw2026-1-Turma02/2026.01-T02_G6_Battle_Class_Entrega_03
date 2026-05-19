@@ -8,18 +8,23 @@
 
 ## 0. Contexto
 
-- O repositório hoje é **somente documentação** (docsify + LaTeX + diagramas). **Não há código.**
-- A entrega exige 3 GoFs (**Factory Method**, **Facade**, **State**) com **código rodando**:
-  scripts `npm run demo:factory|facade|state` + testes Jest/Vitest (caminho feliz e de erro).
-- **Não** é preciso construir o app inteiro (React/Express/Supabase). Basta um **projeto
-  TypeScript/Node** focado nos 3 módulos, com estrutura de pastas espelhando a modelagem.
-- Regra de sala: todos os 10 membros contribuem nos 3 padrões e nas 3 etapas
-  (modelagem, código, execução).
+- O repositório hoje era **somente documentação**. A base de código está sendo criada
+  por este plano.
+- **Decisão de escopo (atualizada):** o plano tem **duas partes**.
+  - **Parte A — Scaffold + GoFs** (§§1–8): o mínimo que a Entrega 03 exige — 3 GoFs
+    rodando via `demo:*` + testes. **Já em execução** (Fases 0–2 concluídas).
+  - **Parte B — Produto completo** (§§9–14): construir o **app inteiro jogável no
+    navegador** (React SPA + Express + Supabase) conforme a arquitetura da Entrega 02,
+    reaproveitando o código dos GoFs da Parte A como motor. **Vai além do que a
+    Entrega 03 pede** — é um objetivo de produto da equipe.
+- Regra de sala (Entrega 03): todos os 10 membros contribuem nos 3 padrões e nas 3
+  etapas (modelagem, código, execução). A Parte B **não substitui** isso — a nota da
+  Entrega 03 depende da Parte A; a Parte B é valor agregado.
 
 ### Stack confirmada (Entrega 02)
-- Front: React (SPA, mobile-first) — fora do escopo de código desta entrega.
+- Front: **React + Vite** (SPA, mobile-first), estado global (Zustand), canvas p/ TD.
 - Back: **Express + TypeScript** (monólito, Clean/Hexagonal: Interface→Aplicação→Domínio→Infra).
-- Persistência: Supabase (Postgres/Auth/Storage) — **mockada** nesta entrega (sem rede real).
+- Persistência: **Supabase** (Postgres/Auth/Storage). Mockada na Parte A; **real na Parte B**.
 
 ---
 
@@ -230,12 +235,20 @@ Mapeamento direto aos arquivos do §2:
 
 ---
 
-## 7. Próximo passo imediato
+## 7. Status da Parte A — ✅ CONCLUÍDA
 
-Executar as fases **S0–S1** da §8 (tooling base). O assistente entrega só o esqueleto
-(S0–S9); a implementação dos GoFs é dos membros (§4). Pedir confirmação antes de
-`npm install` e antes de **qualquer operação git** (preferência global — nenhum
-commit/branch feito pelo assistente sem pedido explícito).
+> Atualização: a pedido do usuário, o assistente foi além do esqueleto e
+> **implementou os 3 GoFs por completo**. Parte A está rodando e verde.
+
+- **S0–S9 feitos** + **GoFs implementados** (não são mais stubs).
+- `npm run typecheck` ✅ · `npm test` ✅ **11/11** · `npm run demo:factory|facade|state` ✅
+- Guia em `CONTRIBUTING_GOF.md`.
+- **Pendências (não-código):** modelagem UML dos 3 padrões, wiki (§4.7), vídeo de
+  5 min, comprovatórios por membro — feitos pela equipe, fora do escopo do assistente.
+- **Não** foi feita nenhuma operação git (preferência global) — os commits S0–S9 +
+  implementação estão prontos para a equipe revisar e versionar.
+
+Próximo passo: revisão da equipe → versionar Parte A → (opcional) iniciar **Parte B**.
 
 ---
 
@@ -289,3 +302,104 @@ de **implementação** (fora deste plano — cada um responsável pelo seu slot 
 **Atomicidade:** S0→S1→S2→S3 são sequenciais (base). S4, S5, S6 são **independentes**
 entre si (esqueletos não se importam). S7/S8 dependem de S4–S6. Total: **10 commits**
 de scaffold, todos verdes.
+
+---
+---
+
+# PARTE B — Produto completo (UI/jogo no navegador)
+
+> ⚠️ **Escopo além da Entrega 03.** A nota da disciplina depende só da Parte A. A Parte
+> B constrói o **Battle Class jogável** (React SPA + Express + Supabase) conforme a
+> arquitetura da Entrega 02, **reusando os GoFs da Parte A como motor**. Só faz sentido
+> iniciar depois que os GoFs (Parte A) estiverem implementados e verdes.
+
+## 9. Arquitetura-alvo (fiel aos diagramas E02)
+
+Monorepo com workspaces npm:
+
+```
+/ (raiz — workspaces)
+├── packages/
+│   ├── core/          # = src/ atual da Parte A (GoFs) → vira pacote @battle/core
+│   ├── backend/       # Express + TS (Clean Arch — Diagrama de Pacotes Backend)
+│   └── frontend/      # React + Vite (Diagrama de Pacotes Frontend)
+├── supabase/          # migrations, seed, config (Diagrama de Implantação)
+└── infra/             # Dockerfiles, k8s manifests (Ingress/HPA/Pods), CI
+```
+
+**backend/** (camadas exatas do Diagrama de Pacotes Backend):
+`interface/` (routers, middlewares, controllers, dtos) → `aplicacao/` (useCases,
+appServices — **onde vive a `PartidaFacade`**) → `dominio/` (auth, users, admin,
+towerDefense, question, ranking, economy — **onde vivem os Factories**) →
+`infra/` (supabaseAdapter, repositories, externalServices — **`VestibularServiceFacade`**,
+database) → `compartilhado/`.
+
+**frontend/** (camadas do Diagrama de Pacotes Frontend):
+`pages/` → `components/` → `hooks/` → `services/` (REST) → `state/` (Zustand) +
+`assets/`. O **motor de jogo no cliente** (canvas TD + loop) consome `@battle/core`
+(State `SessaoTD`/`SessaoQuiz`, Factory de `Torre`/`Inimigo`).
+
+**Onde cada GoF se conecta no produto:**
+- **Factory** → `dominio/towerDefense` (spawn de `Inimigo`/`Torre` por onda/matéria) e
+  `dominio/question` (`Questao` por banca).
+- **Facade** → `PartidaFacade` no `aplicacao/` (controller `POST /partida/rodada` chama
+  ela); `VestibularServiceFacade` no `infra/externalServices`.
+- **State** → `SessaoTD`/`SessaoQuiz` rodam **no cliente** (game loop) e são
+  reconciliados no backend ao finalizar rodada. `Carteira` persiste no Supabase.
+
+## 10. Fases da Parte B (commits discretos)
+
+Pré-requisito: Parte A completa e GoFs implementados (sem `NotImplementedError`).
+
+| # | Fase / commit | Conteúdo | "Rodando" quando |
+|---|---|---|---|
+| **B0** | `chore: monorepo workspaces` | converte raiz em workspaces; move Parte A p/ `packages/core`; `@battle/core` exporta GoFs | `npm -w core test` verde |
+| **B1** | `feat(backend): esqueleto Express Clean Arch` | pastas das 5 camadas, app Express sobe, `GET /health` 200 | `curl /health` |
+| **B2** | `feat(supabase): schema + auth` | migrations (users, carteira, partida, questao, ranking), `supabase/` local, RLS | `supabase start` + migrate |
+| **B3** | `feat(backend): infra repositories + SupabaseAdapter` | repositórios reais implementam interfaces dos subsistemas da Facade | testes integração repo |
+| **B4** | `feat(backend): dominio + Factories reais` | TowerDefense/Question usam os Factories de `@battle/core` | testes domínio |
+| **B5** | `feat(backend): aplicacao + PartidaFacade` | useCases ligam controllers↔Facade↔domínio↔repo | `POST /partida/rodada` 200 |
+| **B6** | `feat(backend): interface (auth, ranking, questoes, TD)` | routers/controllers/DTOs + middleware JWT (GoTrue) | rotas E02 respondendo |
+| **B7** | `feat(frontend): esqueleto React+Vite` | Vite, router, layout mobile-first, store Zustand | `npm -w frontend dev` abre |
+| **B8** | `feat(frontend): auth + perfil + carteira` | telas login/cadastro (Supabase Auth), perfil, saldo | login real ponta-a-ponta |
+| **B9** | `feat(frontend): modo estudo (quiz)` | UI de questões consumindo `SessaoQuiz` + REST; credita `Carteira` | jogar quiz no browser |
+| **B10** | `feat(frontend): modo tower defense` | canvas + game loop usando `SessaoTD` + Factory; gasta `Carteira` | jogar TD no browser |
+| **B11** | `feat(frontend): ranking + admin` | ranking, painel admin (aprovar questões IA) | telas E02 completas |
+| **B12** | `feat(infra): docker + k8s + CI` | Dockerfiles, manifests (Ingress/HPA/Pods), pipeline | deploy reproduzível |
+| **B13** | `test(e2e): Playwright fluxo completo` | login → quiz ganha moedas → TD gasta → ranking | E2E verde |
+
+B1–B6 (backend) e B7 (frontend shell) podem correr em paralelo após B0; B8–B11
+dependem do backend correspondente.
+
+## 11. Como rodar localmente (alvo final)
+
+```
+npm install                       # workspaces
+supabase start                    # Postgres+Auth+Storage local (Docker)
+npm -w backend run migrate
+npm -w backend run dev            # Express :3000
+npm -w frontend run dev           # Vite  :5173  → abre o jogo no navegador
+```
+
+## 12. Riscos / atenção (Parte B)
+
+- **Esforço real de produto** (semanas-equipe), não cabe no cronograma da Entrega 03 —
+  tratar como trilha paralela pós-entrega.
+- Supabase real exige Docker local e segredos (`.env`, **não** commitar).
+- O game loop no canvas deve manter `SessaoTD`/`SessaoQuiz` como fonte de verdade do
+  estado — não duplicar regra no React (senão o State GoF vira decorativo).
+- Manter `@battle/core` sem dependência de React/Express (puro) p/ os demos da Parte A
+  continuarem válidos como comprovatório da Entrega 03.
+
+## 13. Divisão sugerida (Parte B)
+
+Reaproveita afinidades da §4: Code Leads de Facade (Dannyeclisson) e State (Marina)
+puxam o **backend**; quem fez Factory (João Lobo/Lucas) liga **domínio**; Gabriela +
+Eric no **frontend**; Thiago no **game loop/canvas**; Ana **E2E/QA**; João Victor
+**CI/infra + vídeo**; Otávio **integração/senso crítico/docs**.
+
+## 14. Próximo passo
+
+Concluir **Parte A** (Fases 3–4 + implementação dos membros). Só então abrir a branch
+`feat/produto` e iniciar **B0**. Confirmar com a equipe que a Parte B é trilha paralela
+e **não** bloqueia a entrega da disciplina.

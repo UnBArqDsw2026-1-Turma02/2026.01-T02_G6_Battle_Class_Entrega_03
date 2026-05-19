@@ -13,6 +13,7 @@
     "demo:state": "tsx demos/demo-state.ts"
   },
   "devDependencies": {
+    "@types/node": "^20.19.41",
     "@vitest/coverage-v8": "^2.1.9",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",

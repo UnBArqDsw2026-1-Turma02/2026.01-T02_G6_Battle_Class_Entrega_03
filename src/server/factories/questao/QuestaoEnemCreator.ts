@@ -1,11 +1,15 @@
 import { QuestaoCreator } from './QuestaoCreator.js';
 import type { Questao } from './Questao.js';
-import { NotImplementedError } from '../../../shared/index.js';
 
-/** ConcreteCreator (F1). TODO(@JoaoCarlosLobo): formato/parser da banca Enem. */
+/** ConcreteCreator (F1) — formato/normalização da banca ENEM. */
 export class QuestaoEnemCreator extends QuestaoCreator {
   protected override factoryMethod(textoBase: string): Questao {
-    void textoBase;
-    throw new NotImplementedError('F1 QuestaoEnemCreator.factoryMethod');
+    return {
+      id: `ENEM-${textoBase.trim().length}`,
+      enunciado: textoBase.trim(),
+      banca: 'ENEM',
+      dificuldade: 'medio',
+      alternativas: ['A', 'B', 'C', 'D', 'E'],
+    };
   }
 }

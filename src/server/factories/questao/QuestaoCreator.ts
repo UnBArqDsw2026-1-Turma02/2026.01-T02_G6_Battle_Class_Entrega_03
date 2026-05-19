@@ -1,12 +1,14 @@
 import type { Questao } from './Questao.js';
-import { NotImplementedError } from '../../../shared/index.js';
+import { EntradaInvalidaError } from '../../../shared/index.js';
 
-/** Creator abstrato (F1). */
+/** Creator abstrato (F1). Valida e delega o parsing por banca. */
 export abstract class QuestaoCreator {
   protected abstract factoryMethod(textoBase: string): Questao;
 
   criarQuestao(textoBase: string): Questao {
-    void textoBase; // TODO(@JoaoCarlosLobo): parsing/normalização por banca.
-    throw new NotImplementedError('F1 QuestaoCreator.criarQuestao');
+    if (textoBase.trim().length === 0) {
+      throw new EntradaInvalidaError('textoBase vazio');
+    }
+    return this.factoryMethod(textoBase);
   }
 }

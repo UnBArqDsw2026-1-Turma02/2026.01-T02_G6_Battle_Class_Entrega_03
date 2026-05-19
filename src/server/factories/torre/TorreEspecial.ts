@@ -1,15 +1,13 @@
 import { Torre } from './Torre.js';
-import { NotImplementedError } from '../../../shared/index.js';
 
-/** ConcreteProduct (F1). TODO(@ThiagoTonin): custo/dano, atirar() e habilidade. */
+/** ConcreteProduct (F1) — possui habilidade extra. */
 export class TorreEspecial extends Torre {
-  override readonly custo: number = 0;
-  override readonly dano: number = 0;
-  override atirar(alvo: string): void {
-    void alvo;
-    throw new NotImplementedError('F1 TorreEspecial.atirar');
+  override readonly custo = 120;
+  override readonly dano = 25;
+  override atirar(alvo: string): string {
+    return `TorreEspecial atira em ${alvo} (dano=${this.dano})`;
   }
-  ativarHabilidade(): void {
-    throw new NotImplementedError('F1 TorreEspecial.ativarHabilidade');
+  ativarHabilidade(): string {
+    return 'TorreEspecial: habilidade ativada (dano dobrado nesta onda)';
   }
 }

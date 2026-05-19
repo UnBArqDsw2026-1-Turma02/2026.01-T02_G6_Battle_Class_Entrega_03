@@ -1,10 +1,10 @@
 import { TorreCreator } from './TorreCreator.js';
 import type { Torre } from './Torre.js';
-import { NotImplementedError } from '../../../shared/index.js';
+import { TorreEspecial } from './TorreEspecial.js';
 
-/** ConcreteCreator (F1). TODO(@ThiagoTonin): return new TorreEspecial(). */
+/** ConcreteCreator (F1). */
 export class TorreEspecialCreator extends TorreCreator {
   protected override factoryMethod(): Torre {
-    throw new NotImplementedError('F1 TorreEspecialCreator.factoryMethod');
+    return new TorreEspecial();
   }
 }

@@ -1,13 +1,13 @@
 import type { Inimigo } from './Inimigo.js';
-import { NotImplementedError } from '../../../shared/index.js';
 
-/** Creator abstrato (F1). Subclasses definem factoryMethod(). */
+/** Creator abstrato (F1). */
 export abstract class InimigoCreator {
   protected abstract factoryMethod(): Inimigo;
 
-  /** Lógica que usa o produto pela interface (escala por onda). */
+  /** Usa o produto pela interface, escalando o HP pela onda. */
   spawn(onda: number): Inimigo {
-    void onda; // TODO(@JoaoCarlosLobo): const e = this.factoryMethod(); escalar hp; return e;
-    throw new NotImplementedError('F1 InimigoCreator.spawn');
+    const e = this.factoryMethod();
+    e.hp = Math.round(e.hp * (1 + onda * 0.15));
+    return e;
   }
 }

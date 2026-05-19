@@ -1,20 +1,18 @@
 import type { EstadoTD } from './EstadoTD.js';
 import type { SessaoTD } from './SessaoTD.js';
-import { NotImplementedError } from '../../shared/index.js';
+import { EstadoInvalidoError } from '../../shared/index.js';
+import { ComprandoTorres } from './ComprandoTorres.js';
 
-/** ConcreteState (F3). TODO(@MarinaGaldi): comportamento + transições. */
+/** ConcreteState (F3) — tela inicial; só `iniciar` é válido. */
 export class AguardandoInicio implements EstadoTD {
   readonly nome = 'AguardandoInicio';
-  tick(ctx: SessaoTD, dt: number): void {
-    void ctx; void dt;
-    throw new NotImplementedError('F3 AguardandoInicio.tick');
+  tick(): void {
+    throw new EstadoInvalidoError(this.nome, 'tick');
   }
   iniciar(ctx: SessaoTD): void {
-    void ctx;
-    throw new NotImplementedError('F3 AguardandoInicio.iniciar');
+    ctx.setEstado(new ComprandoTorres());
   }
-  pronto(ctx: SessaoTD): void {
-    void ctx;
-    throw new NotImplementedError('F3 AguardandoInicio.pronto');
+  pronto(): void {
+    throw new EstadoInvalidoError(this.nome, 'pronto');
   }
 }

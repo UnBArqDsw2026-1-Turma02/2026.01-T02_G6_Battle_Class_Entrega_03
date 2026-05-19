@@ -1,16 +1,21 @@
-import { NotImplementedError } from '../shared/index.js';
+import { SaldoInsuficienteError, EntradaInvalidaError } from '../shared/index.js';
 
 /** Dependência compartilhada — ÚNICO acoplamento Quiz↔TD (ver §1 do plano). */
 export class Carteira {
+  private saldo = 0;
+
   obterSaldo(): number {
-    throw new NotImplementedError('F3 Carteira.obterSaldo');
+    return this.saldo;
   }
+
   creditar(valor: number): void {
-    void valor;
-    throw new NotImplementedError('F3 Carteira.creditar');
+    if (valor < 0) throw new EntradaInvalidaError('crédito negativo');
+    this.saldo += valor;
   }
+
   debitar(valor: number): void {
-    void valor;
-    throw new NotImplementedError('F3 Carteira.debitar');
+    if (valor < 0) throw new EntradaInvalidaError('débito negativo');
+    if (valor > this.saldo) throw new SaldoInsuficienteError(this.saldo, valor);
+    this.saldo -= valor;
   }
 }
