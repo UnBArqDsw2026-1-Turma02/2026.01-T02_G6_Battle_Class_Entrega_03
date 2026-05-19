@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
   InimigoMatematicaCreator,
+  InimigoBiologiaCreator, 
+  InimigoHistoriaCreator,
   QuestaoFuvestCreator,
   TorreEspecialCreator,
 } from '../src/server/factories/index.js';
@@ -29,5 +31,17 @@ describe('F1 Factory Method', () => {
     expect(() => new QuestaoFuvestCreator().criarQuestao('  ')).toThrow(
       EntradaInvalidaError,
     );
+  });
+
+  it('caminho feliz: Biologia escala HP pela onda', () => {
+    const c = new InimigoBiologiaCreator();
+    expect(c.spawn(0).hp).toBe(120);
+    expect(c.spawn(2).hp).toBe(156); 
+  });
+
+  it('caminho feliz: Historia escala HP pela onda', () => {
+    const c = new InimigoHistoriaCreator();
+    expect(c.spawn(0).hp).toBe(140);
+    expect(c.spawn(2).hp).toBe(182); 
   });
 });
