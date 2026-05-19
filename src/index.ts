@@ -1,5 +1,4 @@
 // Barrel raiz do projeto Battle Class — GoFs (Entrega 03).
-// Os esqueletos de Factory Method, Facade e State serão adicionados na Fase 2
-// do scaffold (ver plans/00_scaffold_e_gofs.md §8). Este arquivo existe para
-// que `tsc` tenha pelo menos uma entrada e o typecheck passe desde a Fase 0.
-export {};
+// `shared` já está implementado (Fase 1). Os esqueletos de Factory Method,
+// Facade e State entram na Fase 2 (ver plans/00_scaffold_e_gofs.md §8).
+export * from './shared/index.js';
