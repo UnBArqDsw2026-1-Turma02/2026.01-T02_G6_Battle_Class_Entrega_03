@@ -3,3 +3,9 @@ docs_slides/
 latex/
 others/
 .DS_Store
+
+# Node / TypeScript
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo

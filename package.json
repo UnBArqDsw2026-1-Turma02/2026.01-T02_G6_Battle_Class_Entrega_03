@@ -1,0 +1,21 @@
+{
+  "name": "battle-class-gof",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Battle Class — Entrega 03: GoFs (Factory Method, Facade, State) em TypeScript",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
+    "demo:factory": "tsx demos/demo-factory.ts",
+    "demo:facade": "tsx demos/demo-facade.ts",
+    "demo:state": "tsx demos/demo-state.ts"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.9",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  }
+}
