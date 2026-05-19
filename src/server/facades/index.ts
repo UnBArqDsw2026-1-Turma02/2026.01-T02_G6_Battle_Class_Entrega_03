@@ -1,2 +1,3 @@
-// Barrel do pacote — preenchido na Fase 2 do scaffold (esqueleto dos GoFs).
-export {};
+export * from './subsistemas/index.js';
+export * from './PartidaFacade.js';
+export * from './VestibularServiceFacade.js';

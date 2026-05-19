@@ -1,0 +1,13 @@
+import type { Inimigo } from './Inimigo.js';
+import type { Materia } from '../../../shared/index.js';
+import { NotImplementedError } from '../../../shared/index.js';
+
+/** ConcreteProduct (F1). TODO(@JoaoCarlosLobo): calibrar hp/velocidade e render(). */
+export class InimigoHistoria implements Inimigo {
+  readonly materia: Materia = 'historia';
+  readonly hp: number = 0; // TODO(@JoaoCarlosLobo)
+  readonly velocidade: number = 0; // TODO(@JoaoCarlosLobo)
+  render(): void {
+    throw new NotImplementedError('F1 InimigoHistoria.render');
+  }
+}
