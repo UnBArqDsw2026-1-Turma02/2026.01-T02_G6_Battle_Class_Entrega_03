@@ -4,9 +4,10 @@ import { EstadoInvalidoError } from '../../shared/index.js';
 import { Vitoria } from './Vitoria.js';
 import { Derrota } from './Derrota.js';
 
-/** ConcreteState (F3) — cada tick resolve uma onda; transita p/ terminal. */
+/** ConcreteState (F3): cada tick resolve uma onda; transita para terminal. */
 export class EmBatalha implements EstadoTD {
   readonly nome = 'EmBatalha';
+
   tick(ctx: SessaoTD, dt: number): void {
     void dt;
     if (ctx.hpBase <= 0) {
@@ -18,9 +19,15 @@ export class EmBatalha implements EstadoTD {
       ctx.setEstado(new Vitoria());
     }
   }
+
   iniciar(): void {
     throw new EstadoInvalidoError(this.nome, 'iniciar');
   }
+
+  comprar(): void {
+    throw new EstadoInvalidoError(this.nome, 'comprar');
+  }
+
   pronto(): void {
     throw new EstadoInvalidoError(this.nome, 'pronto');
   }
