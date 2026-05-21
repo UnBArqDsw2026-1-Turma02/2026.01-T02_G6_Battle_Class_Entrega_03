@@ -40,3 +40,33 @@
 - Código: `src/server/facades/PartidaFacade.ts`
 - Teste: `tests/facade.test.ts`
 - Demo: `demos/demo-facade.ts`
+
+## F3 - State
+
+### Escopo
+
+- Implementação/refinamento dos estados terminais `Vitoria` e `Derrota`.
+- Criação de `EstadoTDTerminal` para centralizar o bloqueio de transições inválidas.
+- Inclusão da operação `comprar()` no contrato `EstadoTD`, delegada pelo contexto `SessaoTD`.
+
+### Decisões técnicas
+
+- Estados terminais não aceitam novas transições e lançam `EstadoInvalidoError` de forma uniforme.
+- `comprar()` pertence ao contrato do State porque sua validade depende do estado atual.
+- A compra fica válida apenas em `ComprandoTorres`, mantendo `SessaoTD` sem condicionais por nome de estado.
+
+### Evidências
+
+- Código: `src/state/td/EstadoTDTerminal.ts`, `src/state/td/Vitoria.ts`, `src/state/td/Derrota.ts`
+- Teste: `tests/state.test.ts`
+- Demo: `demos/demo-state.ts`
+
+## Validação local
+
+```bash
+npm run typecheck
+npm test
+npm run demo:factory
+npm run demo:facade
+npm run demo:state
+```
