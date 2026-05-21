@@ -12,7 +12,7 @@ export class AguardandoInicio implements EstadoTD {
   iniciar(ctx: SessaoTD): void {
     ctx.setEstado(new ComprandoTorres());
   }
-  pronto(): void {
-    throw new EstadoInvalidoError(this.nome, 'pronto');
+  comprar(_ctx: SessaoTD, _custo: number): void {
+    throw new EstadoInvalidoError(this.nome, 'comprar');
   }
 }

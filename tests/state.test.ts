@@ -19,25 +19,29 @@ describe('F3 State — SessaoQuiz', () => {
 });
 
 describe('F3 State — SessaoTD', () => {
-  it('caminho feliz: iniciar→pronto→ticks levam à Vitória', () => {
+  it('caminho feliz: iniciar→comprar→ticks levam à Vitória', () => {
     const td = new SessaoTD(undefined, 2);
+    td.carteira.creditar(20);
     td.iniciar();
-    td.pronto();
+    td.comprar(10);
     td.tick(1);
+    td.comprar(10);
     td.tick(1);
     expect(td.estadoAtual).toBe('Vitoria');
   });
 
   it('caminho de erro: ação em estado terminal', () => {
     const td = new SessaoTD(undefined, 1);
+    td.carteira.creditar(10);
     td.iniciar();
-    td.pronto();
+    td.comprar(10);
     td.tick(1); // -> Vitoria
     expect(() => td.tick(1)).toThrow(EstadoInvalidoError);
   });
 
-  it('caminho de erro: Carteira debita acima do saldo', () => {
+  it('caminho de erro: compra acima do saldo da Carteira', () => {
     const td = new SessaoTD();
-    expect(() => td.carteira.debitar(5)).toThrow(SaldoInsuficienteError);
+    td.iniciar();
+    expect(() => td.comprar(5)).toThrow(SaldoInsuficienteError);
   });
 });

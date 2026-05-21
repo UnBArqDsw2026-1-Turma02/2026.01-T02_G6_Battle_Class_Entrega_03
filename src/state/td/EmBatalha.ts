@@ -3,6 +3,7 @@ import type { SessaoTD } from './SessaoTD.js';
 import { EstadoInvalidoError } from '../../shared/index.js';
 import { Vitoria } from './Vitoria.js';
 import { Derrota } from './Derrota.js';
+import { ComprandoTorres } from './ComprandoTorres.js';
 
 /** ConcreteState (F3) — cada tick resolve uma onda; transita p/ terminal. */
 export class EmBatalha implements EstadoTD {
@@ -16,12 +17,14 @@ export class EmBatalha implements EstadoTD {
     ctx.ondasRestantes -= 1;
     if (ctx.ondasRestantes <= 0) {
       ctx.setEstado(new Vitoria());
+      return;
     }
+    ctx.setEstado(new ComprandoTorres());
   }
-  iniciar(): void {
+  iniciar(_ctx: SessaoTD): void {
     throw new EstadoInvalidoError(this.nome, 'iniciar');
   }
-  pronto(): void {
-    throw new EstadoInvalidoError(this.nome, 'pronto');
+  comprar(_ctx: SessaoTD, _custo: number): void {
+    throw new EstadoInvalidoError(this.nome, 'comprar');
   }
 }

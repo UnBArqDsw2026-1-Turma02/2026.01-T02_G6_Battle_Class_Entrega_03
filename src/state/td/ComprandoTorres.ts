@@ -1,18 +1,20 @@
 import type { EstadoTD } from './EstadoTD.js';
 import type { SessaoTD } from './SessaoTD.js';
-import { EstadoInvalidoError } from '../../shared/index.js';
+import { EntradaInvalidaError, EstadoInvalidoError } from '../../shared/index.js';
 import { EmBatalha } from './EmBatalha.js';
 
-/** ConcreteState (F3) — gasta moedas; `pronto` inicia a batalha. */
+/** ConcreteState (F3) — compra/upgrade debita Carteira e inicia batalha. */
 export class ComprandoTorres implements EstadoTD {
   readonly nome = 'ComprandoTorres';
-  tick(): void {
+  tick(_ctx: SessaoTD, _dt: number): void {
     throw new EstadoInvalidoError(this.nome, 'tick');
   }
-  iniciar(): void {
+  iniciar(_ctx: SessaoTD): void {
     throw new EstadoInvalidoError(this.nome, 'iniciar');
   }
-  pronto(ctx: SessaoTD): void {
+  comprar(ctx: SessaoTD, custo: number): void {
+    if (custo < 0) throw new EntradaInvalidaError('custo negativo de compra');
+    ctx.carteira.debitar(custo);
     ctx.setEstado(new EmBatalha());
   }
 }

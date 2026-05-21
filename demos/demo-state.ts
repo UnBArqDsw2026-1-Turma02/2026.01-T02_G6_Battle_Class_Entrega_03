@@ -12,9 +12,16 @@ for (let i = 0; i < 3; i++) {
 console.log('\n=== SessaoTD (modo tower defense) ===');
 const td = new SessaoTD();
 td.iniciar(); // -> ComprandoTorres
-td.pronto(); // -> EmBatalha
-while (td.estadoAtual === 'EmBatalha') td.tick(1);
+td.carteira.creditar(30);
+while (td.estadoAtual !== 'Vitoria' && td.estadoAtual !== 'Derrota') {
+  if (td.estadoAtual === 'ComprandoTorres') {
+    td.comprar(10); // debita carteira e inicia batalha
+  } else if (td.estadoAtual === 'EmBatalha') {
+    td.tick(1);
+  }
+}
 console.log('estado final TD:', td.estadoAtual);
+console.log('saldo final TD:', td.carteira.obterSaldo());
 
 console.log('\n--- caminho de erro (ação em estado terminal) ---');
 try {

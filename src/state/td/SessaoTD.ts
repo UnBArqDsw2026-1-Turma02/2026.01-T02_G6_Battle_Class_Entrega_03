@@ -24,7 +24,7 @@ export class SessaoTD {
   iniciar(): void {
     this.estado.iniciar(this);
   }
-  pronto(): void {
-    this.estado.pronto(this);
+  comprar(custo: number): void {
+    this.estado.comprar(this, custo);
   }
 }
