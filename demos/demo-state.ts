@@ -12,9 +12,9 @@ for (let i = 0; i < 3; i++) {
 console.log('\n=== SessaoTD (modo tower defense) ===');
 const td = new SessaoTD();
 td.carteira.creditar(100);
-td.iniciar();
-td.comprar(50);
-td.pronto();
+td.iniciar(); // -> ComprandoTorres
+td.comprar(50); // debita a carteira; permanece em ComprandoTorres
+td.pronto(); // -> EmBatalha
 while (td.estadoAtual === 'EmBatalha') td.tick(1);
 console.log('estado final TD:', td.estadoAtual);
 console.log('saldo apos compra:', td.carteira.obterSaldo());

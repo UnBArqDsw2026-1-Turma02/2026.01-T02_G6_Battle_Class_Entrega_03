@@ -26,8 +26,9 @@ describe('F3 State - SessaoTD', () => {
     td.comprar(40);
     expect(td.carteira.obterSaldo()).toBe(60);
     td.pronto();
-    td.tick(1);
-    td.tick(1);
+    td.tick(1); // onda 1 resolvida -> volta a ComprandoTorres
+    td.pronto();
+    td.tick(1); // onda 2 resolvida -> Vitoria
     expect(td.estadoAtual).toBe('Vitoria');
   });
 
@@ -57,8 +58,9 @@ describe('F3 State - SessaoTD', () => {
     expect(() => td.pronto()).toThrow(EstadoInvalidoError);
   });
 
-  it('caminho de erro: Carteira debita acima do saldo', () => {
+  it('caminho de erro: compra acima do saldo da Carteira', () => {
     const td = new SessaoTD();
-    expect(() => td.carteira.debitar(5)).toThrow(SaldoInsuficienteError);
+    td.iniciar();
+    expect(() => td.comprar(5)).toThrow(SaldoInsuficienteError);
   });
 });

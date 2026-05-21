@@ -2,3 +2,6 @@ export * from './QuizService.js';
 export * from './EconomiaService.js';
 export * from './TowerDefenseService.js';
 export * from './PartidaRepository.js';
+export * from './UserRepositoryMock.js';
+export * from './SupabaseAuthMock.js';
+export * from './JwtVerifierMock.js';
