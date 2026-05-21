@@ -44,18 +44,18 @@ describe('F1 Factory Method', () => {
   });
 
   it('caminho feliz: TorreEspecial tem habilidade', () => {
-    const t = new TorreEspecialCreator().construir();
+    const t = new TorreEspecialCreator().construir(0);
     expect(t.calcularDano()).toBe(25);
   });
 
   it('caminho feliz: TorreEspecialCreator aplica bônus por nível', () => {
-    const t = new TorreEspecialCreator().construir(2);
+    const t = new TorreEspecialCreator().construir(0, 2);
     expect(t.calcularDano()).toBe(41);
     expect(t.custo).toBe(160);
   });
 
   it('caminho de erro: TorreEspecialCreator rejeita nível negativo', () => {
-    expect(() => new TorreEspecialCreator().construir(-1)).toThrow(
+    expect(() => new TorreEspecialCreator().construir(0, -1)).toThrow(
       EntradaInvalidaError,
     );
   });

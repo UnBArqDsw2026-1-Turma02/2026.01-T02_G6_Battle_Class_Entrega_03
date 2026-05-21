@@ -3,16 +3,16 @@ import { EntradaInvalidaError } from '../../../shared/index.js';
 
 /** ConcreteProduct (F1) — possui habilidade extra. */
 export class TorreEspecial extends Torre {
-  override readonly custo: number;
-  override readonly dano: number;
-
-  constructor(nivelUpgrade = 0) {
+  constructor(
+    private readonly nivelUpgrade = 0,
+    override readonly custo = 120 + nivelUpgrade * 20,
+    override readonly dano = 25 + nivelUpgrade * 8,
+    override readonly alcance = 5,
+  ) {
     super();
     if (!Number.isInteger(nivelUpgrade) || nivelUpgrade < 0) {
       throw new EntradaInvalidaError('nivelUpgrade deve ser inteiro >= 0');
     }
-    this.custo = 120 + nivelUpgrade * 20;
-    this.dano = 25 + nivelUpgrade * 8;
   }
 
   override atirar(alvo: string): string {
@@ -20,5 +20,14 @@ export class TorreEspecial extends Torre {
   }
   ativarHabilidade(): string {
     return 'TorreEspecial: habilidade ativada (dano dobrado nesta onda)';
+  }
+
+  override comCusto(custo: number): TorreEspecial {
+    return new TorreEspecial(
+      this.nivelUpgrade,
+      custo,
+      this.dano,
+      this.alcance,
+    );
   }
 }
