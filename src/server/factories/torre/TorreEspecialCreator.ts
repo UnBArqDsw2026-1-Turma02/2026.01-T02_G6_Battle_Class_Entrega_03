@@ -8,7 +8,7 @@ export class TorreEspecialCreator extends TorreCreator {
     return new TorreEspecial();
   }
 
-  construir(nivelUpgrade = 0): TorreEspecial {
+  override construir(nivelUpgrade = 0): TorreEspecial {
     if (!Number.isInteger(nivelUpgrade) || nivelUpgrade < 0) {
       throw new EntradaInvalidaError('nivelUpgrade deve ser inteiro >= 0');
     }

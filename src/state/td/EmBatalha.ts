@@ -5,9 +5,10 @@ import { Vitoria } from './Vitoria.js';
 import { Derrota } from './Derrota.js';
 import { ComprandoTorres } from './ComprandoTorres.js';
 
-/** ConcreteState (F3) — cada tick resolve uma onda; transita p/ terminal. */
+/** ConcreteState (F3): cada tick resolve uma onda; transita para terminal. */
 export class EmBatalha implements EstadoTD {
   readonly nome = 'EmBatalha';
+
   tick(ctx: SessaoTD, dt: number): void {
     void dt;
     if (ctx.hpBase <= 0) {
@@ -21,10 +22,16 @@ export class EmBatalha implements EstadoTD {
     }
     ctx.setEstado(new ComprandoTorres());
   }
-  iniciar(_ctx: SessaoTD): void {
+
+  iniciar(): void {
     throw new EstadoInvalidoError(this.nome, 'iniciar');
   }
-  comprar(_ctx: SessaoTD, _custo: number): void {
+
+  comprar(): void {
     throw new EstadoInvalidoError(this.nome, 'comprar');
+  }
+
+  pronto(): void {
+    throw new EstadoInvalidoError(this.nome, 'pronto');
   }
 }
