@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { PartidaFacade } from '../src/server/facades/index.js';
+import { AuthFacade, PartidaFacade } from '../src/server/facades/index.js';
 import { EntradaInvalidaError } from '../src/shared/index.js';
 
 describe('F2 Facade', () => {
@@ -18,5 +18,28 @@ describe('F2 Facade', () => {
     await expect(
       new PartidaFacade().finalizarRodada('u1', []),
     ).rejects.toBeInstanceOf(EntradaInvalidaError);
+  });
+});
+
+describe('F2 Facade — AuthFacade', () => {
+  it('caminho feliz: registrar/login/validarToken', async () => {
+    const auth = new AuthFacade();
+    const cadastro = await auth.registrar({
+      email: 'marina@battleclass.dev',
+      senha: 'segredo123',
+    });
+    const login = await auth.login('marina@battleclass.dev', 'segredo123');
+    const payload = await auth.validarToken(login.token);
+
+    expect(cadastro.usuario.email).toBe('marina@battleclass.dev');
+    expect(login.usuario.id).toBe(cadastro.usuario.id);
+    expect(payload.userId).toBe(cadastro.usuario.id);
+  });
+
+  it('caminho de erro: token inválido', async () => {
+    const auth = new AuthFacade();
+    await expect(auth.validarToken('token-invalido')).rejects.toBeInstanceOf(
+      EntradaInvalidaError,
+    );
   });
 });
