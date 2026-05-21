@@ -1,4 +1,5 @@
 export * from './EstadoTD.js';
+export * from './EstadoTDTerminal.js';
 export * from './SessaoTD.js';
 export * from './AguardandoInicio.js';
 export * from './ComprandoTorres.js';
