@@ -25,7 +25,7 @@ function criarQuestaoCreatorsPadrao(): Record<Banca, QuestaoCreator> {
 /**
  * Subsystem (F2). Gabarito mock: alternativa 'A' e a correta.
  *
- * A selecao de questao consome a Roleta criada por Factory Method (F1),
+ * A seleção de questão consome a Roleta criada por Factory Method (F1),
  * preservando o fluxo Roleta -> QuestaoCreator -> Questao.
  */
 export class QuizService {

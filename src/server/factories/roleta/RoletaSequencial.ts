@@ -9,9 +9,9 @@ const MATERIAS_PADRAO: ReadonlyArray<Materia> = [
 ];
 
 /**
- * ConcreteProduct (F1): roleta deterministica para testes, demos e CI.
+ * ConcreteProduct (F1): roleta determinística para testes, demos e CI.
  *
- * Uma roleta aleatoria ou ponderada pode substituir esta classe sem alterar
+ * Uma roleta aleatória ou ponderada pode substituir esta classe sem alterar
  * QuizService ou PartidaFacade.
  */
 export class RoletaSequencial implements Roleta {

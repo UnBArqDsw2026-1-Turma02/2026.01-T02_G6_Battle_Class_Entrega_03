@@ -3,7 +3,7 @@ import type { Roleta } from './Roleta.js';
 import { RoletaCreator } from './RoletaCreator.js';
 import { RoletaSequencial } from './RoletaSequencial.js';
 
-/** ConcreteCreator (F1): cria a roleta padrao do fluxo de Quiz. */
+/** ConcreteCreator (F1): cria a roleta padrão do fluxo de Quiz. */
 export class RoletaSequencialCreator extends RoletaCreator {
   constructor(private readonly materias?: ReadonlyArray<Materia>) {
     super();

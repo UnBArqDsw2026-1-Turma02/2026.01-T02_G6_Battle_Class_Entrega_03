@@ -5,8 +5,8 @@ import type { SessaoTD } from './SessaoTD.js';
 /**
  * Base dos estados terminais do TD.
  *
- * Vitoria e Derrota nao aceitam novas transicoes. Centralizar esse
- * comportamento evita divergencia entre os finais da maquina de estados.
+ * Vitoria e Derrota não aceitam novas transições. Centralizar esse
+ * comportamento evita divergência entre os finais da máquina de estados.
  */
 export abstract class EstadoTDTerminal implements EstadoTD {
   abstract readonly nome: string;

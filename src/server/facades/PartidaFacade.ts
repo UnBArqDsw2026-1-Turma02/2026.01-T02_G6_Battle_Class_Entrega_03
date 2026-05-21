@@ -34,10 +34,10 @@ export interface PartidaRepositoryPort {
 }
 
 /**
- * Facade (F2): orquestra quiz -> economia -> TD -> repo num unico ponto.
+ * Facade (F2): orquestra quiz -> economia -> TD -> repo num único ponto.
  *
- * A regra de dominio fica nos subsistemas; a Facade estabiliza o contrato
- * publico e preserva a ordem do caso de uso.
+ * A regra de domínio fica nos subsistemas; a Facade estabiliza o contrato
+ * público e preserva a ordem do caso de uso.
  */
 export class PartidaFacade {
   constructor(

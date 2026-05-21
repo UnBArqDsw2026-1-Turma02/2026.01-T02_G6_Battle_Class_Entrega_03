@@ -2,7 +2,7 @@ import type { EstadoTD } from './EstadoTD.js';
 import { Carteira } from '../Carteira.js';
 import { AguardandoInicio } from './AguardandoInicio.js';
 
-/** Context 2 (F3): modo tower defense. Acoplado ao Quiz so pela Carteira. */
+/** Context 2 (F3): modo tower defense. Acoplado ao Quiz só pela Carteira. */
 export class SessaoTD {
   private estado: EstadoTD = new AguardandoInicio();
 

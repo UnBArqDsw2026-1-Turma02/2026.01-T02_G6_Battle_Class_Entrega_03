@@ -3,7 +3,7 @@ import type { SessaoTD } from './SessaoTD.js';
 import { EstadoInvalidoError } from '../../shared/index.js';
 import { ComprandoTorres } from './ComprandoTorres.js';
 
-/** ConcreteState (F3): tela inicial; so `iniciar` e valido. */
+/** ConcreteState (F3): tela inicial; só `iniciar` é válido. */
 export class AguardandoInicio implements EstadoTD {
   readonly nome = 'AguardandoInicio';
 
