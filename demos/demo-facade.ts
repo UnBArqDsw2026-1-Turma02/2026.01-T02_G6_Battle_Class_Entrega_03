@@ -1,9 +1,13 @@
-// npm run demo:facade — Facade (F2)
+// npm run demo:facade - Facade (F2)
 import { PartidaFacade, VestibularServiceFacade } from '../src/server/facades/index.js';
 
 const facade = new PartidaFacade();
 
-console.log('=== F2 Facade — PartidaFacade.finalizarRodada ===');
+console.log('=== F2 Facade: PartidaFacade.obterProximaQuestao ===');
+const questao = await facade.obterProximaQuestao('user-1', 'ENEM');
+console.log('questao sorteada:', `${questao.banca} :: ${questao.enunciado}`);
+
+console.log('\n=== F2 Facade - PartidaFacade.finalizarRodada ===');
 const out = await facade.finalizarRodada('user-1', [
   { questaoId: 'q1', alternativa: 'A' },
   { questaoId: 'q2', alternativa: 'A' },
