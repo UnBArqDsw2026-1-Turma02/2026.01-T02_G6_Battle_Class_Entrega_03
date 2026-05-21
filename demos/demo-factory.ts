@@ -1,4 +1,4 @@
-// npm run demo:factory — Factory Method (F1)
+// npm run demo:factory - Factory Method (F1)
 import type { Materia } from '../src/shared/index.js';
 import {
   InimigoCreator,
@@ -7,11 +7,12 @@ import {
   InimigoBiologiaCreator,
   QuestaoEnemCreator,
   QuestaoUnbCreator,
+  RoletaSequencialCreator,
   TorreComumCreator,
   TorreEspecialCreator,
 } from '../src/server/factories/index.js';
 
-console.log('=== F1 Factory Method — Inimigos por matéria/onda ===');
+console.log('=== F1 Factory Method - Inimigos por materia/onda ===');
 const creators: Record<Materia, InimigoCreator> = {
   matematica: new InimigoMatematicaCreator(),
   historia: new InimigoHistoriaCreator(),
@@ -23,9 +24,19 @@ for (const onda of [1, 3]) {
   }
 }
 
-console.log('\n=== Questões por banca ===');
-console.log(new QuestaoEnemCreator().criarQuestao('Função do 2º grau...'));
-console.log(new QuestaoUnbCreator().criarQuestao('Afirmação para julgar...'));
+console.log('\n=== RoletaCreator: materia sorteada para o Quiz ===');
+const roleta = new RoletaSequencialCreator().criarRoleta();
+console.log(roleta.render());
+console.log('materias:', [
+  roleta.proximaMateria(),
+  roleta.proximaMateria(),
+  roleta.proximaMateria(),
+  roleta.proximaMateria(),
+].join(', '));
+
+console.log('\n=== Questoes por banca ===');
+console.log(new QuestaoEnemCreator().criarQuestao('Funcao do 2o grau...'));
+console.log(new QuestaoUnbCreator().criarQuestao('Afirmacao para julgar...'));
 
 console.log('\n=== Torres ===');
 const t1 = new TorreComumCreator().construir();
