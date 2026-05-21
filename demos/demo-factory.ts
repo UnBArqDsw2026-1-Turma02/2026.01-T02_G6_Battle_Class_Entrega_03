@@ -29,7 +29,7 @@ console.log(new QuestaoUnbCreator().criarQuestao('Afirmação para julgar...'));
 
 console.log('\n=== Torres ===');
 const t1 = new TorreComumCreator().construir();
-const t2 = new TorreEspecialCreator().construir();
+const t2 = new TorreEspecialCreator().construir(2);
 console.log(t1.atirar('inimigo#1'), '| custo', t1.custo);
 console.log(t2.atirar('inimigo#2'), '| custo', t2.custo);
 

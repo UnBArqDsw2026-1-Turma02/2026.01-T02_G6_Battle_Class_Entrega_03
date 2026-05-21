@@ -37,6 +37,18 @@ describe('F1 Factory Method', () => {
     expect(t.calcularDano()).toBe(25);
   });
 
+  it('caminho feliz: TorreEspecialCreator aplica bônus por nível', () => {
+    const t = new TorreEspecialCreator().construir(2);
+    expect(t.calcularDano()).toBe(41);
+    expect(t.custo).toBe(160);
+  });
+
+  it('caminho de erro: TorreEspecialCreator rejeita nível negativo', () => {
+    expect(() => new TorreEspecialCreator().construir(-1)).toThrow(
+      EntradaInvalidaError,
+    );
+  });
+
   it('caminho de erro: textoBase vazio', () => {
     expect(() => new QuestaoFuvestCreator().criarQuestao('  ')).toThrow(
       EntradaInvalidaError,
