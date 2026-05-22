@@ -1,4 +1,4 @@
-import { Inimigo } from './Inimigo.js';
+import type { Inimigo } from './Inimigo.js';
 
 export abstract class InimigoCreator {
   protected abstract factoryMethod(): Inimigo;

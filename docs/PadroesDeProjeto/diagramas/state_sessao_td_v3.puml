@@ -1,0 +1,65 @@
+@startuml state_sessao_td_v3
+title Máquina de Estados V3 — SessaoTD (modo tower defense)
+
+note right
+  **V3 — correção em relação à V2**
+  - Context independente de SessaoQuiz
+  - Acoplamento único: Carteira (débito em compras)
+  - Estado **Intervalo** removido: gasto entre ondas
+    coberto por ComprandoTorres.comprar()
+end note
+
+class SessaoTD {
+  - estado: EstadoTD
+  + carteira: Carteira
+  + ondasRestantes: number
+  + hpBase: number
+  + iniciar()
+  + comprar(custo)
+  + pronto()
+  + tick(dt)
+}
+
+interface EstadoTD {
+  + tick(ctx, dt)
+  + iniciar(ctx)
+  + comprar(ctx, custo)
+  + pronto(ctx)
+}
+
+abstract class EstadoTDBase {
+  + tick() <<InvalidStateError>>
+  + iniciar() <<InvalidStateError>>
+  + comprar() <<InvalidStateError>>
+  + pronto() <<InvalidStateError>>
+}
+
+class AguardandoInicio
+class ComprandoTorres
+class EmBatalha
+class Vitoria <<terminal>>
+class Derrota <<terminal>>
+
+abstract class EstadoTDTerminal
+
+EstadoTD <|.. EstadoTDBase
+EstadoTDBase <|-- AguardandoInicio
+EstadoTDBase <|-- ComprandoTorres
+EstadoTDBase <|-- EmBatalha
+EstadoTDTerminal <|-- EstadoTDBase
+EstadoTDTerminal <|-- Vitoria
+EstadoTDTerminal <|-- Derrota
+
+SessaoTD o--> EstadoTD
+
+[*] --> AguardandoInicio
+AguardandoInicio --> ComprandoTorres : iniciar()
+ComprandoTorres --> ComprandoTorres : comprar(ctx, custo)
+ComprandoTorres --> EmBatalha : pronto()
+EmBatalha --> ComprandoTorres : tick()\n(ondas restantes > 0)
+EmBatalha --> Vitoria : tick()\n(ondas = 0)
+EmBatalha --> Derrota : tick()\n(hp <= 0)
+Vitoria --> [*]
+Derrota --> [*]
+
+@enduml

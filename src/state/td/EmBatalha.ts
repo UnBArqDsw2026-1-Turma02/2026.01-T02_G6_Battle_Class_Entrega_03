@@ -1,15 +1,14 @@
-import type { EstadoTD } from './EstadoTD.js';
 import type { SessaoTD } from './SessaoTD.js';
-import { EstadoInvalidoError } from '../../shared/index.js';
+import { EstadoTDBase } from './EstadoTD.js';
 import { Vitoria } from './Vitoria.js';
 import { Derrota } from './Derrota.js';
 import { ComprandoTorres } from './ComprandoTorres.js';
 
 /** ConcreteState (F3): cada tick resolve uma onda; transita para terminal. */
-export class EmBatalha implements EstadoTD {
-  readonly nome = 'EmBatalha';
+export class EmBatalha extends EstadoTDBase {
+  override readonly nome = 'EmBatalha';
 
-  tick(ctx: SessaoTD, dt: number): void {
+  override tick(ctx: SessaoTD, dt: number): void {
     void dt;
     if (ctx.hpBase <= 0) {
       ctx.setEstado(new Derrota());
@@ -21,17 +20,5 @@ export class EmBatalha implements EstadoTD {
       return;
     }
     ctx.setEstado(new ComprandoTorres());
-  }
-
-  iniciar(): void {
-    throw new EstadoInvalidoError(this.nome, 'iniciar');
-  }
-
-  comprar(): void {
-    throw new EstadoInvalidoError(this.nome, 'comprar');
-  }
-
-  pronto(): void {
-    throw new EstadoInvalidoError(this.nome, 'pronto');
   }
 }

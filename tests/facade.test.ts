@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import {
   AuthFacade,
   PartidaFacade,
+  RankingFacade,
+  EconomiaService,
   type EconomiaPort,
   type PartidaRepositoryPort,
   type QuizPort,
@@ -85,6 +87,36 @@ describe('F2 Facade', () => {
         { questaoId: 'q1', alternativa: 'A' },
       ]),
     ).rejects.toBeInstanceOf(EntradaInvalidaError);
+  });
+
+  it('finalizarRodada credita moedas', async () => {
+    const economia = new EconomiaService();
+    const facade = new PartidaFacade(undefined, economia);
+    await facade.finalizarRodada('player-1', [
+      { questaoId: 'q1', alternativa: 'A' },
+      { questaoId: 'q2', alternativa: 'B' },
+      { questaoId: 'q3', alternativa: 'A' },
+    ]);
+    expect(economia.obterSaldo('player-1')).toBe(20);
+  });
+});
+
+describe('F2 Facade — RankingFacade', () => {
+  it('caminho feliz: top retorna ranking por moedas de questão', () => {
+    const ranking = new RankingFacade();
+    const top3 = ranking.top(3);
+    expect(top3[0]?.userId).toBe('u2');
+    expect(top3[0]?.moedasQuestao).toBe(120);
+  });
+
+  it('caminho feliz: posicaoDoUsuario reflete moedas de questão', () => {
+    const ranking = new RankingFacade();
+    expect(ranking.posicaoDoUsuario('u2')).toBe(1);
+    expect(ranking.posicaoDoUsuario('u3')).toBe(3);
+  });
+
+  it('caminho de erro: limite inválido no top', () => {
+    expect(() => new RankingFacade().top(0)).toThrow(EntradaInvalidaError);
   });
 });
 

@@ -48,3 +48,6 @@ export class EstadoInvalidoError extends BattleClassError {
     super(`Ação "${acao}" inválida no estado "${estado}"`);
   }
 }
+
+/** Alias documental (State V3) — mesmo comportamento de EstadoInvalidoError. */
+export { EstadoInvalidoError as InvalidStateError };

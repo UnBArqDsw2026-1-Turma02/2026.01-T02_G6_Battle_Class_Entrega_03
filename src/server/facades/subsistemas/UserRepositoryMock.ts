@@ -8,7 +8,12 @@ export interface Usuario {
 
 /** Subsystem (F2/Auth) — mock de repositório de usuários em memória. */
 export class UserRepositoryMock {
-  private readonly usuarios = new Map<string, Usuario>();
+  private readonly usuarios = new Map<string, Usuario>([
+    ['u1', { id: 'u1', email: 'ana@battle.class', senha: 'seed' }],
+    ['u2', { id: 'u2', email: 'bruno@battle.class', senha: 'seed' }],
+    ['u3', { id: 'u3', email: 'carla@battle.class', senha: 'seed' }],
+    ['user-1', { id: 'user-1', email: 'demo@battle.class', senha: 'seed' }],
+  ]);
   private idCounter = 1;
 
   criar(email: string, senha: string): Usuario {

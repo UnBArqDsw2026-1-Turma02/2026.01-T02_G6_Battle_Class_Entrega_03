@@ -1,0 +1,50 @@
+@startuml state_sessao_quiz_v3
+title Máquina de Estados V3 — SessaoQuiz (modo estudo)
+
+note right
+  **V3 — correção em relação à V2**
+  - Context independente de SessaoTD
+  - Acoplamento único: Carteira (credita em onAcerto)
+  - Estado **Intervalo** removido (existia só no fluxo
+    linear acoplado Quiz→TD da V2)
+end note
+
+class SessaoQuiz {
+  - estado: EstadoQuiz
+  + carteira: Carteira
+  + perguntasRestantes: number
+  + acertar()
+  + errar()
+  + avancar()
+}
+
+interface EstadoQuiz {
+  + onAcerto(ctx)
+  + onErro(ctx)
+  + proxima(ctx)
+}
+
+abstract class EstadoQuizBase {
+  + onAcerto() <<InvalidStateError>>
+  + onErro() <<InvalidStateError>>
+  + proxima() <<InvalidStateError>>
+}
+
+class ExibindoPergunta
+class AguardandoResposta
+class QuizEncerrado <<terminal>>
+
+EstadoQuiz <|.. EstadoQuizBase
+EstadoQuizBase <|-- ExibindoPergunta
+EstadoQuizBase <|-- AguardandoResposta
+EstadoQuizBase <|-- QuizEncerrado
+
+SessaoQuiz o--> EstadoQuiz
+
+[*] --> ExibindoPergunta
+ExibindoPergunta --> AguardandoResposta : proxima()
+AguardandoResposta --> ExibindoPergunta : onAcerto/onErro\n(perguntas > 0)
+AguardandoResposta --> QuizEncerrado : onAcerto/onErro\n(perguntas = 0)
+QuizEncerrado --> [*]
+
+@enduml

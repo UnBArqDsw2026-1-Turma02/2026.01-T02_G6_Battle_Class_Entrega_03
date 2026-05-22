@@ -1,5 +1,7 @@
 // npm run demo:state - State (F3), dois contextos independentes
 import { SessaoQuiz, SessaoTD } from '../src/state/index.js';
+import { Partida } from '../src/modules/game/Partida.js';
+import { MOEDAS_PARA_COMBATE_TD } from '../src/shared/state/EstadoPartida.js';
 
 console.log('=== F3 State - SessaoQuiz (modo estudo) ===');
 const q = new SessaoQuiz();
@@ -26,3 +28,11 @@ try {
   console.log('OK, erro esperado:', (e as Error).message);
 }
 console.log('Contextos independentes - acoplados so pela Carteira.');
+
+console.log('\n=== Partida (maquina unificada V3) ===');
+const partida = new Partida(undefined, 1);
+partida.onOnda();
+for (let i = 0; i < MOEDAS_PARA_COMBATE_TD / 10; i++) partida.onAcerto();
+console.log(`estado=${partida.estadoAtual} saldo=${partida.carteira.obterSaldo()}`);
+partida.tick(1);
+console.log('estado final Partida:', partida.estadoAtual);

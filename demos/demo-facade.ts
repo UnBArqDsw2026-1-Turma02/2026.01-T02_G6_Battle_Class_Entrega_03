@@ -2,6 +2,7 @@
 import {
   AuthFacade,
   PartidaFacade,
+  RankingFacade,
   VestibularServiceFacade,
 } from '../src/server/facades/index.js';
 
@@ -19,6 +20,11 @@ const out = await facade.finalizarRodada('user-1', [
   { questaoId: 'q4', alternativa: 'C' },
 ]);
 console.log('resultado:', out);
+
+console.log('\n=== RankingFacade (moedas de questão) ===');
+const ranking = new RankingFacade();
+console.log('top 3:', ranking.top(3));
+console.log('posição user-1:', ranking.posicaoDoUsuario('user-1'));
 
 console.log('\n=== VestibularServiceFacade.obterQuestoes ===');
 const qs = await new VestibularServiceFacade().obterQuestoes({ materia: 'matematica' });

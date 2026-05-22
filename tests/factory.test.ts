@@ -14,6 +14,7 @@ import {
   InimigoHistoriaRapidoCreator,
   QuestaoFuvestCreator,
   RoletaSequencialCreator,
+  TorreComumCreator,
   TorreEspecialCreator,
 } from '../src/server/factories/index.js';
 import { EntradaInvalidaError } from '../src/shared/index.js';
@@ -41,6 +42,27 @@ describe('F1 Factory Method', () => {
     expect(roleta.proximaMateria()).toBe('historia');
     expect(roleta.proximaMateria()).toBe('biologia');
     expect(roleta.proximaMateria()).toBe('historia');
+  });
+
+  it('caminho feliz: TorreComumCreator cria TorreComum com custo correto', () => {
+    const t = new TorreComumCreator().construir(0);
+    expect(t.custo).toBe(50);
+    expect(t.calcularDano()).toBe(10);
+    expect(t.alcance).toBe(3);
+  });
+
+  it('caminho de erro: TorreCreator com onda negativa lança exceção', () => {
+    expect(() => new TorreComumCreator().construir(-1)).toThrow(
+      EntradaInvalidaError,
+    );
+  });
+
+  it('caminho feliz: TorreEspecial difere de TorreComum em custo/dano/alcance', () => {
+    const comum = new TorreComumCreator().construir(0);
+    const especial = new TorreEspecialCreator().construir(0);
+    expect(especial.custo).toBeGreaterThan(comum.custo);
+    expect(especial.calcularDano()).toBeGreaterThan(comum.calcularDano());
+    expect(especial.alcance).toBeGreaterThan(comum.alcance);
   });
 
   it('caminho feliz: TorreEspecial tem habilidade', () => {
