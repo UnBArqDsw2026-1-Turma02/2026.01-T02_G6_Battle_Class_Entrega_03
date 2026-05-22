@@ -1,0 +1,75 @@
+@startuml f1_factory_questao_classes_ana
+title Ana Elisa — F1 (Factory Method): Família Questao
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor White
+  BorderColor #34495E
+  ArrowColor #34495E
+}
+
+legend top left
+  Amarelo = foco deste diagrama
+endlegend
+
+package "shared (tipos)" #F4F6F7 {
+  enum Banca {
+    ENEM
+    FUVEST
+    UNB
+  }
+  enum Nivel {
+    facil
+    medio
+    dificil
+  }
+}
+
+interface Questao #FCF3CF {
+  + id: string
+  + enunciado: string
+  + banca: Banca
+  + dificuldade: Nivel
+  + alternativas: ReadonlyArray<string>
+}
+
+abstract class QuestaoCreator #FCF3CF {
+  # {abstract} factoryMethod(textoBase: string): Questao
+  + criarQuestao(textoBase: string): Questao
+}
+
+class QuestaoEnemCreator #FCF3CF {
+  # override factoryMethod(textoBase: string): Questao
+}
+
+class QuestaoFuvestCreator #FCF3CF {
+  # override factoryMethod(textoBase: string): Questao
+}
+
+class QuestaoUnbCreator #FCF3CF {
+  # override factoryMethod(textoBase: string): Questao
+}
+
+QuestaoCreator ..> Questao : <<cria>>
+QuestaoEnemCreator --|> QuestaoCreator
+QuestaoFuvestCreator --|> QuestaoCreator
+QuestaoUnbCreator --|> QuestaoCreator
+
+QuestaoEnemCreator ..> Questao : banca=ENEM\ndificuldade=medio\n5 alternativas
+QuestaoFuvestCreator ..> Questao : banca=FUVEST\ndificuldade=dificil\n5 alternativas
+QuestaoUnbCreator ..> Questao : banca=UNB\ndificuldade=medio\nCerto/Errado
+
+Questao ..> Banca
+Questao ..> Nivel
+
+note bottom of QuestaoCreator
+  Template Method: valida textoBase
+  (lança EntradaInvalidaError se vazio)
+  e delega a factoryMethod().
+  Cada ConcreteCreator normaliza
+  o formato da sua banca.
+end note
+
+@enduml

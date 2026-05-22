@@ -1,0 +1,92 @@
+@startuml f2_facades_pacotes_ana
+title Ana Elisa — F2 (Facade): Pacotes das 4 Facades
+
+skinparam shadowing false
+skinparam linetype ortho
+skinparam package {
+  BackgroundColor White
+  BorderColor #34495E
+}
+skinparam class {
+  BackgroundColor White
+  BorderColor #34495E
+  ArrowColor #34495E
+}
+
+legend top left
+  Amarelo = Facades (interface publica)
+  Cinza = subsistemas internos
+  Cliente so enxerga as Facades
+endlegend
+
+package "Clientes externos" #F4F6F7 {
+  class RotaPartida <<controller>>
+  class RotaAuth <<controller>>
+  class RotaRanking <<controller>>
+  class VestibularServiceFacade <<facade>>
+}
+
+package "Facades (interface publica)" #FCF3CF {
+  class PartidaFacade {
+    + finalizarRodada(userId, respostas): ResultadoRodada
+    + obterProximaQuestao(userId, banca): Questao
+  }
+  class AuthFacade {
+    + registrar(dto): SessaoAuth
+    + login(email, senha): SessaoAuth
+    + validarToken(token): JwtPayload
+  }
+  class RankingFacade {
+    + top(n): EntradaRankingPublica[]
+    + posicaoDoUsuario(userId): number
+  }
+}
+
+package "Subsistemas internos" #EAECEE {
+  class QuizService
+  class EconomiaService
+  class TowerDefenseService
+  class PartidaRepository
+  class SupabaseAuthMock
+  class JwtVerifierMock
+  class UserRepositoryMock
+  class RankingRepositoryMock
+  class CarteiraRepositoryMock
+  class ConfigService <<compartilhado>>
+}
+
+RotaPartida --> PartidaFacade : usa
+RotaAuth --> AuthFacade : usa
+RotaRanking --> RankingFacade : usa
+
+PartidaFacade --> QuizService
+PartidaFacade --> EconomiaService
+PartidaFacade --> TowerDefenseService
+PartidaFacade --> PartidaRepository
+
+AuthFacade --> SupabaseAuthMock
+AuthFacade --> JwtVerifierMock
+AuthFacade --> UserRepositoryMock
+
+RankingFacade --> RankingRepositoryMock
+RankingFacade --> CarteiraRepositoryMock
+RankingFacade --> UserRepositoryMock
+
+AuthFacade ..> ConfigService : injeta
+RankingFacade ..> ConfigService : injeta
+
+note bottom of ConfigService
+  Subsistema compartilhado injetado
+  em mais de uma Facade sem que
+  uma Facade conheça a outra.
+  Evita "Facade chamando Facade".
+end note
+
+note right of "Facades (interface publica)"
+  Regra de higiene:
+  Facades NAO chamam outras Facades.
+  Cada uma tem vocabulario proprio.
+  Subsistemas ficam em subsistemas/.
+end note
+
+@enduml
