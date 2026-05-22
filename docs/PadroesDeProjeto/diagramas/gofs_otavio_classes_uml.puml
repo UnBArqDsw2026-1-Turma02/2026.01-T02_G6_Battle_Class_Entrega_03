@@ -1,0 +1,114 @@
+@startuml gofs_otavio_classes_uml
+title Battle Class — Entrega 03\nContribuicoes do Otavio Maya nos 3 GoFs (Factory / Facade / State)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam class {
+  BackgroundColor White
+  BorderColor #34495E
+  ArrowColor #34495E
+}
+legend top left
+  Destaque (amarelo) = implementado pelo Otavio
+  Branco = colaboradores reutilizados pelo registry/factories
+endlegend
+
+' ===== Tipos de dominio (shared) =====
+package "shared (tipos)" #F4F6F7 {
+  enum Materia {
+    matematica
+    historia
+    biologia
+  }
+  enum Banca {
+    ENEM
+    FUVEST
+    UNB
+  }
+}
+
+' ===== F1 — CreatorRegistry =====
+package "F1 — Factory Method" #FBFCFC {
+  class CreatorRegistry #FCF3CF {
+    - inimigos: Record<Materia, InimigoCreator>
+    - questoes: Record<Banca, QuestaoCreator>
+    + inimigoPara(materia: Materia): InimigoCreator
+    + questaoPara(banca: Banca): QuestaoCreator
+  }
+
+  abstract class InimigoCreator {
+    # factoryMethod(): Inimigo
+    + spawn(onda: number): Inimigo
+  }
+  abstract class QuestaoCreator {
+    # factoryMethod(textoBase): Questao
+    + criarQuestao(textoBase: string): Questao
+  }
+}
+
+' ===== F2 — Facade / subsistemas =====
+package "F2 — Facade (subsistemas)" #FBFCFC {
+  class ConfigService #FCF3CF {
+    - env: Record<string, string?>
+    + flag(nome: string, padrao=false): boolean
+    + valor(nome: string, padrao=""): string
+    + numero(nome: string, padrao=0): number
+  }
+  class VestibularServiceFacade {
+    + obterQuestoes(filtros): Questao[]
+  }
+  class TowerDefenseService {
+    + liberarRecursos(userId, acertos): string[]
+    + gerarInimigo(materia: Materia, onda): Inimigo
+  }
+  note bottom of ConfigService
+    Subsistema compartilhado:
+    a MESMA instancia e injetada
+    em AuthFacade e RankingFacade
+    (Facade nao chama Facade).
+  end note
+}
+
+' ===== F3 — Factories de sessao (state/index) =====
+package "F3 — State (factories de sessao)" #FBFCFC {
+  class "<<module>> state/index" as StateFactories #FCF3CF {
+    + criarSessaoQuiz(carteira=Carteira, perguntas=3): SessaoQuiz
+    + criarSessaoTD(carteira=Carteira, ondas=3, hpBase=10): SessaoTD
+  }
+  class SessaoQuiz {
+    + carteira: Carteira
+    + estadoAtual: string
+  }
+  class SessaoTD {
+    + carteira: Carteira
+    + estadoAtual: string
+  }
+  class Carteira {
+    + creditar(v: number)
+    + debitar(v: number)
+    + obterSaldo(): number
+  }
+}
+
+' ===== Relacionamentos =====
+CreatorRegistry o--> "1..*" InimigoCreator : resolve por Materia
+CreatorRegistry o--> "1..*" QuestaoCreator : resolve por Banca
+CreatorRegistry ..> Materia
+CreatorRegistry ..> Banca
+
+VestibularServiceFacade --> CreatorRegistry : usa
+TowerDefenseService --> CreatorRegistry : usa
+
+StateFactories ..> SessaoQuiz : cria
+StateFactories ..> SessaoTD : cria
+StateFactories ..> Carteira : injeta
+SessaoQuiz o--> Carteira
+SessaoTD o--> Carteira
+note bottom of Carteira
+  Mesma Carteira em ambas as sessoes
+  = unico acoplamento Quiz <-> TD
+end note
+
+@enduml
