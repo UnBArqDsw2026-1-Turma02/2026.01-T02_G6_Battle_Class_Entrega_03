@@ -10,3 +10,8 @@
     - [<i class="fa-solid fa-arrows-spin"></i> 3.3. GoFs Comportamentais — State](/PadroesDeProjeto/3.3.GoFsComportamentais.md)
     - [<i class="fa-solid fa-users"></i> 3.4. Participações](/PadroesDeProjeto/3.4.ParticipacoesPadroes.md)
     - [<i class="fa-solid fa-star"></i> 3.5. Iniciativas Extras](/PadroesDeProjeto/3.5.IniciativasExtras.md)
+
+- **Comprobatórios**
+  - [<i class="fa-solid fa-user-check"></i> Gabriela Tiago de Araújo](/assets/comprovatorios/gabriela/README.md)
+  - [<i class="fa-solid fa-user-check"></i> João Sapiência](/assets/comprovatorios/joaosapiencia/README.md)
+  - [<i class="fa-solid fa-user-check"></i> Thiago Tonin](/assets/comprovatorios/thiago-tonin/README.md)

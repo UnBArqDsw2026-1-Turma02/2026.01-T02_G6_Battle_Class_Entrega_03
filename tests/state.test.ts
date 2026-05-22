@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { SessaoQuiz, SessaoTD } from '../src/state/index.js';
+import { describe, expect, it } from 'vitest';
 import { EstadoInvalidoError, SaldoInsuficienteError } from '../src/shared/index.js';
+import { SessaoQuiz, SessaoTD } from '../src/state/index.js';
 
 describe('F3 State - SessaoQuiz', () => {
   it('caminho feliz: acerto credita e encerra apos N perguntas', () => {
@@ -15,6 +15,14 @@ describe('F3 State - SessaoQuiz', () => {
 
   it('caminho de erro: responder antes de exibir e invalido', () => {
     expect(() => new SessaoQuiz().acertar()).toThrow(EstadoInvalidoError);
+  });
+
+  it('caminho de erro: acao apos QuizEncerrado e invalida', () => {
+    const q = new SessaoQuiz(undefined, 1);
+    q.avancar();
+    q.acertar();
+    expect(q.estadoAtual).toBe('QuizEncerrado');
+    expect(() => q.avancar()).toThrow(EstadoInvalidoError);
   });
 });
 

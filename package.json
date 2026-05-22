@@ -10,7 +10,10 @@
     "test:cov": "vitest run --coverage",
     "demo:factory": "tsx demos/demo-factory.ts",
     "demo:facade": "tsx demos/demo-facade.ts",
-    "demo:state": "tsx demos/demo-state.ts"
+    "demo:state": "tsx demos/demo-state.ts",
+    "demo:joaosapiencia:factory": "tsx demos/demo-joaosapiencia-factory.ts",
+    "demo:joaosapiencia:facade": "tsx demos/demo-joaosapiencia-facade.ts",
+    "demo:joaosapiencia:state": "tsx demos/demo-joaosapiencia-state.ts"
   },
   "devDependencies": {
     "@types/node": "^20.19.41",
