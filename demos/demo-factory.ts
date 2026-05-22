@@ -39,8 +39,8 @@ console.log(new QuestaoEnemCreator().criarQuestao('Funcao do 2o grau...'));
 console.log(new QuestaoUnbCreator().criarQuestao('Afirmacao para julgar...'));
 
 console.log('\n=== Torres ===');
-const t1 = new TorreComumCreator().construir();
-const t2 = new TorreEspecialCreator().construir(2);
+const t1 = new TorreComumCreator().construir(0);
+const t2 = new TorreEspecialCreator().construir(1, 2);
 console.log(t1.atirar('inimigo#1'), '| custo', t1.custo);
 console.log(t2.atirar('inimigo#2'), '| custo', t2.custo);
 

@@ -69,7 +69,13 @@ export class PartidaFacade {
     const moedas = this.economia.calcularRecompensa(resultado.acertos);
     this.economia.creditar(userId, moedas);
     const desbloqueios = this.td.liberarRecursos(userId, resultado.acertos);
-    await this.repo.salvar({ userId, moedas });
+    await this.repo.salvar({
+      userId,
+      acertos: resultado.acertos,
+      moedas,
+      desbloqueios,
+      criadoEm: new Date(),
+    });
     return { acertos: resultado.acertos, moedas, desbloqueios };
   }
 }

@@ -8,10 +8,14 @@ export class TorreEspecialCreator extends TorreCreator {
     return new TorreEspecial();
   }
 
-  override construir(nivelUpgrade = 0): TorreEspecial {
+  override construir(onda: number, nivelUpgrade = 0): TorreEspecial {
     if (!Number.isInteger(nivelUpgrade) || nivelUpgrade < 0) {
       throw new EntradaInvalidaError('nivelUpgrade deve ser inteiro >= 0');
     }
-    return new TorreEspecial(nivelUpgrade);
+
+    const torreComUpgrade = new TorreEspecial(nivelUpgrade);
+    const custoAjustado = this.calcularCustoPorOnda(torreComUpgrade.custo, onda);
+
+    return torreComUpgrade.comCusto(custoAjustado);
   }
 }
