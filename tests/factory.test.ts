@@ -1,22 +1,24 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  InimigoMatematicaCreator,
-  InimigoMatematicaTanqueCreator,
-  InimigoMatematicaPadraoCreator,
-  InimigoMatematicaRapidoCreator,
-  InimigoBiologiaCreator,
-  InimigoBiologiaTanqueCreator,
-  InimigoBiologiaPadraoCreator,
-  InimigoBiologiaRapidoCreator,
-  InimigoHistoriaCreator,
-  InimigoHistoriaTanqueCreator,
-  InimigoHistoriaPadraoCreator,
-  InimigoHistoriaRapidoCreator,
-  QuestaoFuvestCreator,
-  RoletaSequencialCreator,
-  TorreComumCreator,
-  TorreEspecialCreator,
+    CreatorRegistry,
+    InimigoBiologiaCreator,
+    InimigoBiologiaPadraoCreator,
+    InimigoBiologiaRapidoCreator,
+    InimigoBiologiaTanqueCreator,
+    InimigoHistoriaCreator,
+    InimigoHistoriaPadraoCreator,
+    InimigoHistoriaRapidoCreator,
+    InimigoHistoriaTanqueCreator,
+    InimigoMatematicaCreator,
+    InimigoMatematicaPadraoCreator,
+    InimigoMatematicaRapidoCreator,
+    InimigoMatematicaTanqueCreator,
+    QuestaoFuvestCreator,
+    RoletaSequencialCreator,
+    TorreComumCreator,
+    TorreEspecialCreator,
 } from '../src/server/factories/index.js';
+import type { Banca } from '../src/shared/index.js';
 import { EntradaInvalidaError } from '../src/shared/index.js';
 
 describe('F1 Factory Method', () => {
@@ -158,5 +160,18 @@ describe('F1 Factory Method', () => {
     const c = new InimigoHistoriaRapidoCreator();
     expect(c.spawn(0).hp).toBe(70);
     expect(c.spawn(2).hp).toBe(91);
+  });
+
+  it('caminho feliz: CreatorRegistry resolve banca para QuestaoCreator', () => {
+    const registry = new CreatorRegistry();
+    const q = registry.questaoPara('UNB').criarQuestao('texto');
+    expect(q.banca).toBe('UNB');
+  });
+
+  it('caminho de erro: CreatorRegistry rejeita banca desconhecida', () => {
+    const registry = new CreatorRegistry();
+    expect(() =>
+      registry.questaoPara('IME' as unknown as Banca),
+    ).toThrow(EntradaInvalidaError);
   });
 });

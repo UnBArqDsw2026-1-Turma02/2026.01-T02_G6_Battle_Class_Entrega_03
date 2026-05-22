@@ -1,13 +1,13 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  AuthFacade,
-  PartidaFacade,
-  RankingFacade,
-  EconomiaService,
-  type EconomiaPort,
-  type PartidaRepositoryPort,
-  type QuizPort,
-  type TowerDefensePort,
+    AuthFacade,
+    EconomiaService,
+    PartidaFacade,
+    RankingFacade,
+    type EconomiaPort,
+    type PartidaRepositoryPort,
+    type QuizPort,
+    type TowerDefensePort,
 } from '../src/server/facades/index.js';
 import { QuestaoEnemCreator } from '../src/server/factories/index.js';
 import { EntradaInvalidaError } from '../src/shared/index.js';
@@ -133,6 +133,13 @@ describe('F2 Facade — AuthFacade', () => {
     expect(cadastro.usuario.email).toBe('marina@battleclass.dev');
     expect(login.usuario.id).toBe(cadastro.usuario.id);
     expect(payload.userId).toBe(cadastro.usuario.id);
+  });
+
+  it('caminho de erro: login com email/senha vazios', async () => {
+    const auth = new AuthFacade();
+    await expect(auth.login(' ', ' ')).rejects.toBeInstanceOf(
+      EntradaInvalidaError,
+    );
   });
 
   it('caminho de erro: token inválido', async () => {
