@@ -1,0 +1,44 @@
+@startuml f2_config_service_otavio
+title Otavio — F2 (Facade): ConfigService compartilhado
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor White
+  BorderColor #34495E
+  ArrowColor #34495E
+}
+legend top left
+  Amarelo = implementado pelo Otavio
+endlegend
+
+class ConfigService #FCF3CF {
+  - env: Record<string, string?>
+  + flag(nome: string, padrao=false): boolean
+  + valor(nome: string, padrao=""): string
+  + numero(nome: string, padrao=0): number
+}
+
+class AuthFacade {
+  + registrar(dto)
+  + login(email, senha)
+  + validarToken(jwt)
+}
+class RankingFacade {
+  + top(n)
+  + posicaoDoUsuario(userId)
+}
+
+AuthFacade --> ConfigService : injeta (mesma instancia)
+RankingFacade --> ConfigService : injeta (mesma instancia)
+
+note bottom of ConfigService
+  Subsistema compartilhado entre Facades.
+  A MESMA instancia e injetada em AuthFacade
+  e RankingFacade, sem que uma conheca a outra
+  — evita "Facade chamando Facade".
+  Fonte `env` injetavel para testes.
+end note
+
+@enduml

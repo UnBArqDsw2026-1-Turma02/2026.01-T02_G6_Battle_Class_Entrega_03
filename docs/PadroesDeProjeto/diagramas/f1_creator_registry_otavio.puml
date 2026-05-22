@@ -1,0 +1,65 @@
+@startuml f1_creator_registry_otavio
+title Otavio — F1 (Factory Method): CreatorRegistry
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor White
+  BorderColor #34495E
+  ArrowColor #34495E
+}
+legend top left
+  Amarelo = implementado pelo Otavio
+endlegend
+
+package "shared (tipos)" #F4F6F7 {
+  enum Materia {
+    matematica
+    historia
+    biologia
+  }
+  enum Banca {
+    ENEM
+    FUVEST
+    UNB
+  }
+}
+
+class CreatorRegistry #FCF3CF {
+  - inimigos: Record<Materia, InimigoCreator>
+  - questoes: Record<Banca, QuestaoCreator>
+  + inimigoPara(materia: Materia): InimigoCreator
+  + questaoPara(banca: Banca): QuestaoCreator
+}
+
+abstract class InimigoCreator {
+  # factoryMethod(): Inimigo
+  + spawn(onda: number): Inimigo
+}
+abstract class QuestaoCreator {
+  # factoryMethod(textoBase): Questao
+  + criarQuestao(textoBase: string): Questao
+}
+
+class VestibularServiceFacade {
+  + obterQuestoes(filtros): Questao[]
+}
+class TowerDefenseService {
+  + gerarInimigo(materia: Materia, onda): Inimigo
+}
+
+CreatorRegistry o--> "1..*" InimigoCreator : resolve por Materia
+CreatorRegistry o--> "1..*" QuestaoCreator : resolve por Banca
+CreatorRegistry ..> Materia
+CreatorRegistry ..> Banca
+VestibularServiceFacade --> CreatorRegistry : usa
+TowerDefenseService --> CreatorRegistry : usa
+
+note bottom of CreatorRegistry
+  Ponto unico que mapeia o eixo de dominio
+  ao ConcreteCreator certo, sem if/else
+  sobre tipos concretos.
+end note
+
+@enduml

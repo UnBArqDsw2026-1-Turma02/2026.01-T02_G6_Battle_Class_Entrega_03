@@ -1,0 +1,46 @@
+@startuml f3_factories_sessao_otavio
+title Otavio — F3 (State): factories de sessao (state/index)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor White
+  BorderColor #34495E
+  ArrowColor #34495E
+}
+legend top left
+  Amarelo = implementado pelo Otavio
+endlegend
+
+class "<<module>> state/index" as StateFactories #FCF3CF {
+  + criarSessaoQuiz(carteira=Carteira, perguntas=3): SessaoQuiz
+  + criarSessaoTD(carteira=Carteira, ondas=3, hpBase=10): SessaoTD
+}
+
+class SessaoQuiz {
+  + carteira: Carteira
+  + estadoAtual: string
+}
+class SessaoTD {
+  + carteira: Carteira
+  + estadoAtual: string
+}
+class Carteira {
+  + creditar(v: number)
+  + debitar(v: number)
+  + obterSaldo(): number
+}
+
+StateFactories ..> SessaoQuiz : cria (estado de entrada)
+StateFactories ..> SessaoTD : cria (estado de entrada)
+StateFactories ..> Carteira : injeta
+SessaoQuiz o--> Carteira
+SessaoTD o--> Carteira
+
+note bottom of Carteira
+  A MESMA Carteira nas duas sessoes
+  = unico acoplamento Quiz <-> TD.
+end note
+
+@enduml

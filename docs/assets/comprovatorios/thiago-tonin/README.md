@@ -53,8 +53,17 @@
 
 - Código: `src/state/quiz/*`, `src/state/td/*`, `src/shared/state/*`, `src/modules/game/Partida.ts`
 - Testes: `tests/state.test.ts`, `tests/partida-state.test.ts`
-- Diagramas: `docs/PadroesDeProjeto/diagramas/state_sessao_quiz_v3.puml`, `state_sessao_td_v3.puml`, `state_partida_v3.puml`
+- Diagramas (fontes): `docs/PadroesDeProjeto/diagramas/state_sessao_quiz_v3.puml`, `state_sessao_td_v3.puml`, `state_partida_v3.puml`
 - Demo: `npm run demo:state`
+
+Máquinas de estados V3 (Quiz e TD):
+
+![Máquina de Estados — Quiz (V3)](../../../PadroesDeProjeto/diagramas/f3_maquina_estados_quiz_Thiago.png)
+![Máquina de Estados — TD (V3)](../../../PadroesDeProjeto/diagramas/f3_maquina_estados_td_Thiago.png)
+
+Máquina unificada `Partida` (V3):
+
+![Máquina de Estados — Partida (V3)](../../../PadroesDeProjeto/diagramas/state_partida_v3.png)
 
 ## Validação local
 

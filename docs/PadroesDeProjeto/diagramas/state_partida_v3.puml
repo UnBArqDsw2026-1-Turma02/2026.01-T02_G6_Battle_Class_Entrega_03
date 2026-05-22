@@ -1,44 +1,14 @@
 @startuml state_partida_v3
 title Máquina de Estados V3 — Partida (visão unificada)
 
-note right
-  Complementa SessaoQuiz/SessaoTD (contextos separados).
+note as N
+  Context: **Partida** (padrão State) — complementa
+  SessaoQuiz/SessaoTD (contextos separados).
+  Estados implementam a interface EstadoPartida
+  (base abstrata: EstadoPartidaBase).
   **Intervalo removido**: transição automática
   EmEstudo → EmCombateTD quando saldo >= 50 moedas.
 end note
-
-class Partida {
-  - estado: EstadoPartida
-  + carteira: Carteira
-  + tick(dt)
-  + onAcerto()
-  + onErro()
-  + onOnda()
-}
-
-interface EstadoPartida {
-  + tick(ctx, dt)
-  + onAcerto(ctx)
-  + onErro(ctx)
-  + onOnda(ctx)
-}
-
-abstract class EstadoPartidaBase
-
-class AguardandoInicio
-class EmEstudo
-class EmCombateTD
-class Pausada
-class Vitoria <<terminal>>
-class Derrota <<terminal>>
-
-EstadoPartida <|.. EstadoPartidaBase
-EstadoPartidaBase <|-- AguardandoInicio
-EstadoPartidaBase <|-- EmEstudo
-EstadoPartidaBase <|-- EmCombateTD
-EstadoPartidaBase <|-- Pausada
-EstadoPartidaBase <|-- Vitoria
-EstadoPartidaBase <|-- Derrota
 
 [*] --> AguardandoInicio
 AguardandoInicio --> EmEstudo : onOnda()
@@ -47,5 +17,7 @@ EmCombateTD --> Pausada : onOnda()
 Pausada --> EmCombateTD : tick()
 EmCombateTD --> Vitoria : tick()\n(ondas = 0)
 EmCombateTD --> Derrota : tick()\n(castelo <= 0)
+Vitoria --> [*]
+Derrota --> [*]
 
 @enduml
